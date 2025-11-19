@@ -13,10 +13,13 @@ insert into permissao (nome, descricao) values ('listar', 'listar entidades');
 insert into permissao (nome, descricao) values ('cadastrar', 'cadastrar entidades');
 insert into permissao (nome, descricao) values ('editar', 'editar entidades');
 
-insert into cidade (nome) values ('Belo Horizonte');
-insert into cidade (nome) values ('Formiga');
-insert into cidade (nome) values ('São Paulo');
+insert into estado (id, nome) values (1, 'MG');
+insert into estado (id, nome) values (2, 'SP');
+insert into estado (id, nome) values (3, 'RS');
 
-insert into estado (nome) values ('MG');
-insert into estado (nome) values ('SP');
-insert into estado (nome) values ('RS');
+insert into cidade (id, nome, estado_id) values (1, 'Uberlândia', 1);
+insert into cidade (id, nome, estado_id) values (2, 'Belo Horizonte', 1);
+insert into cidade (id, nome, estado_id) values (3, 'São Paulo', 2);
+insert into cidade (id, nome, estado_id) values (4, 'Campinas', 2);
+insert into cidade (id, nome, estado_id) values (5, 'Fortaleza', 3);
+
