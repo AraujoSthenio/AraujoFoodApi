@@ -2,6 +2,7 @@ package com.araujo.araujofood.infrastructure.repository;
 
 import com.araujo.araujofood.domain.model.Estado;
 import com.araujo.araujofood.domain.repository.EstadoRepository;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,6 +37,11 @@ public class EstadoRepositoryImpl implements EstadoRepository {
     @Override
     public void remover(Long id) {
         Estado estado = buscar(id);
+
+        if (estado == null) {
+            throw new EmptyResultDataAccessException(1);
+        }
+
         manager.remove(estado);
     }
 }

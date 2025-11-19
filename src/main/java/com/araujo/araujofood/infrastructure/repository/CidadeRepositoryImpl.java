@@ -3,6 +3,7 @@ package com.araujo.araujofood.infrastructure.repository;
 import com.araujo.araujofood.domain.model.Cidade;
 import com.araujo.araujofood.domain.model.Restaurante;
 import com.araujo.araujofood.domain.repository.CidadeRepository;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,6 +38,11 @@ public class CidadeRepositoryImpl implements CidadeRepository {
     @Override
     public void remover(Long id) {
         Cidade cidade = buscar(id);
+
+        if (cidade == null) {
+            throw new EmptyResultDataAccessException(1);
+        }
+
         manager.remove(cidade);
     }
 }

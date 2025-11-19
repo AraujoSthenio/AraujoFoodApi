@@ -1,9 +1,12 @@
 package com.araujo.araujofood.domain.service;
 
+import com.araujo.araujofood.domain.exception.EntidadeEmUsoException;
 import com.araujo.araujofood.domain.exception.EntidadeNaoEncontradaException;
 import com.araujo.araujofood.domain.model.Estado;
 import com.araujo.araujofood.domain.repository.EstadoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,13 +21,13 @@ public class CadastroEstadoService {
     }
 
     public void remover(Long estadoId) {
-        Estado estado = estadoRepository.buscar(estadoId);
-
-        if (estado == null) {
-            throw new EntidadeNaoEncontradaException(String.format("Não existe estado com código %d", estadoId));
+        try {
+            estadoRepository.remover(estadoId);
+        } catch (EmptyResultDataAccessException e) {
+            throw new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de estado com código %d", estadoId));
+        } catch (DataIntegrityViolationException e) {
+            throw new EntidadeEmUsoException(String.format("Estado de código %d não pode ser removido, pois está em uso", estadoId));
         }
-
-        estadoRepository.remover(estadoId);
     }
 
 }

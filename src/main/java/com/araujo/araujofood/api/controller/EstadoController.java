@@ -63,6 +63,8 @@ public class EstadoController {
         try {
             cadastroEstadoService.remover(estadoId);
             return ResponseEntity.noContent().build();
+        } catch (EntidadeEmUsoException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
         } catch (EntidadeNaoEncontradaException e) {
             return ResponseEntity.notFound().build();
         }

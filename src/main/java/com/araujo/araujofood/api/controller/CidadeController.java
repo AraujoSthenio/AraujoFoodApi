@@ -49,7 +49,7 @@ public class CidadeController {
     }
 
     @PutMapping("/{cidadeId}")
-    public ResponseEntity<Cidade> salvar(@PathVariable Long cidadeId, @RequestBody Cidade cidade) {
+    public ResponseEntity<?> alterar(@PathVariable Long cidadeId, @RequestBody Cidade cidade) {
         try {
             Cidade cidadeAtual = cidadeRepository.buscar(cidadeId);
             if (cidadeAtual != null) {
@@ -59,7 +59,7 @@ public class CidadeController {
             }
             return ResponseEntity.notFound().build();
         } catch (EntidadeNaoEncontradaException e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
@@ -68,8 +68,6 @@ public class CidadeController {
         try {
             cadastroCidadeService.remover(cidadeId);
             return ResponseEntity.noContent().build();
-        } catch (EntidadeEmUsoException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
         } catch (EntidadeNaoEncontradaException e) {
             return ResponseEntity.notFound().build();
         }

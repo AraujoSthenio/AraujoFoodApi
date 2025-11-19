@@ -34,7 +34,7 @@ public class CadastroCidadeService {
 
     public void remover(Long cidadeId) {
         try {
-            estadoRepository.remover(cidadeId);
+            cidadeRepository.remover(cidadeId);
         } catch (EmptyResultDataAccessException e) {
             throw new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de cidade com código %d", cidadeId));
         } catch (DataIntegrityViolationException e) {
