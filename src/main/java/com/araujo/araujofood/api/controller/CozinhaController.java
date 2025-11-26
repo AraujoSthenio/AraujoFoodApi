@@ -30,7 +30,7 @@ public class CozinhaController {
     }
 
     @GetMapping("/{cozinhaId}")
-    public Cozinha buscar(@PathVariable  Long cozinhaId) {
+    public Cozinha buscar(@PathVariable Long cozinhaId) {
         return cadastroCozinhaService.buscar(cozinhaId);
     }
 
