@@ -1,6 +1,6 @@
 package com.araujo.araujofood.domain.service;
 
-import com.araujo.araujofood.domain.exception.EntidadeNaoEncontradaException;
+import com.araujo.araujofood.domain.exception.RestauranteNaoEncontradoException;
 import com.araujo.araujofood.domain.model.Cozinha;
 import com.araujo.araujofood.domain.model.Restaurante;
 import com.araujo.araujofood.domain.repository.RestauranteRepository;
@@ -10,8 +10,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class CadastroRestauranteService {
 
-    public static final String MSG_RESTAURANTE_NAO_ENCONTRADO = "Não existe cadastro de restaurante com código %d";
-
     @Autowired
     private RestauranteRepository restauranteRepository;
 
@@ -20,8 +18,7 @@ public class CadastroRestauranteService {
 
     public Restaurante buscar(Long restauranteId) {
         return restauranteRepository.findById(restauranteId)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException(
-                        String.format(MSG_RESTAURANTE_NAO_ENCONTRADO, restauranteId)));
+                .orElseThrow(() -> new RestauranteNaoEncontradoException(restauranteId));
     }
 
     public Restaurante salvar(Restaurante restaurante) {

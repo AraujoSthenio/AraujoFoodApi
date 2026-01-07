@@ -1,14 +1,13 @@
 package com.araujo.araujofood.api.controller;
 
-import com.araujo.araujofood.domain.exception.EntidadeEmUsoException;
-import com.araujo.araujofood.domain.exception.EntidadeNaoEncontradaException;
+import com.araujo.araujofood.domain.exception.EstadoNaoEncontradoException;
+import com.araujo.araujofood.domain.exception.NegocioException;
 import com.araujo.araujofood.domain.model.Cidade;
 import com.araujo.araujofood.domain.repository.CidadeRepository;
 import com.araujo.araujofood.domain.service.CadastroCidadeService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,14 +34,23 @@ public class CidadeController {
 
     @PostMapping
     public Cidade salvar(@RequestBody Cidade cidade) {
-        return cadastroCidadeService.salvar(cidade);
+        try {
+            return cadastroCidadeService.salvar(cidade);
+        } catch (EstadoNaoEncontradoException e) {
+            throw new NegocioException(e.getMessage(), e);
+        }
     }
 
     @PutMapping("/{cidadeId}")
     public Cidade alterar(@PathVariable Long cidadeId, @RequestBody Cidade cidade) {
-        Cidade cidadeAtual = cadastroCidadeService.buscar(cidadeId);
-        BeanUtils.copyProperties(cidade, cidadeAtual, "id");
-        return cadastroCidadeService.salvar(cidadeAtual);
+        try {
+            Cidade cidadeAtual = cadastroCidadeService.buscar(cidadeId);
+            BeanUtils.copyProperties(cidade, cidadeAtual, "id");
+
+            return cadastroCidadeService.salvar(cidadeAtual);
+        } catch (EstadoNaoEncontradoException e) {
+            throw new NegocioException(e.getMessage(), e);
+        }
     }
 
     @DeleteMapping("/{cidadeId}")

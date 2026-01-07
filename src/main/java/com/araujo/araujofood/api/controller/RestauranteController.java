@@ -1,6 +1,7 @@
 package com.araujo.araujofood.api.controller;
 
-import com.araujo.araujofood.domain.exception.EntidadeNaoEncontradaException;
+import com.araujo.araujofood.domain.exception.CozinhaNaoEncontradaException;
+import com.araujo.araujofood.domain.exception.NegocioException;
 import com.araujo.araujofood.domain.model.Restaurante;
 import com.araujo.araujofood.domain.repository.RestauranteRepository;
 import com.araujo.araujofood.domain.service.CadastroRestauranteService;
@@ -8,14 +9,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/restaurantes")
@@ -41,14 +40,22 @@ public class RestauranteController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Restaurante salvar(@RequestBody Restaurante restaurante) {
-         return cadastroRestauranteService.salvar(restaurante);
+        try {
+            return cadastroRestauranteService.salvar(restaurante);
+        } catch (CozinhaNaoEncontradaException e) {
+            throw new NegocioException(e.getMessage());
+        }
     }
 
     @PutMapping("/{restauranteId}")
     public Restaurante alterar(@PathVariable Long restauranteId, @RequestBody Restaurante restaurante) {
         Restaurante restauranteAtual = cadastroRestauranteService.buscar(restauranteId);
         BeanUtils.copyProperties(restaurante, restauranteAtual, "id", "formasPagamento", "endereco", "dataCadastro", "produtos");
-        return cadastroRestauranteService.salvar(restauranteAtual);
+        try {
+            return cadastroRestauranteService.salvar(restaurante);
+        } catch (CozinhaNaoEncontradaException e) {
+            throw new NegocioException(e.getMessage());
+        }
     }
 
     @PatchMapping("/{restauranteId}")
