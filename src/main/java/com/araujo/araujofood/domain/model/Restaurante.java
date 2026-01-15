@@ -1,6 +1,7 @@
 package com.araujo.araujofood.domain.model;
 
 import com.araujo.araujofood.Groups;
+import com.araujo.araujofood.core.validation.ValorZeroIncluirDescricao;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,6 +20,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@ValorZeroIncluirDescricao(valorField = "taxaFrete", descricaoField = "nome",
+        descricaoObrigatoria = "Frete Grátis")
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity

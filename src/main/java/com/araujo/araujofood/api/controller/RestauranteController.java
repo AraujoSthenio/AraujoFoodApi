@@ -1,5 +1,6 @@
 package com.araujo.araujofood.api.controller;
 
+import com.araujo.araujofood.core.validation.ValidacaoException;
 import com.araujo.araujofood.domain.exception.CozinhaNaoEncontradaException;
 import com.araujo.araujofood.domain.exception.NegocioException;
 import com.araujo.araujofood.domain.model.Restaurante;
@@ -14,6 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.util.ReflectionUtils;
+import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.SmartValidator;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,6 +35,9 @@ public class RestauranteController {
 
     @Autowired
     private CadastroRestauranteService cadastroRestauranteService;
+
+    @Autowired
+    private SmartValidator validator;
 
     @GetMapping
     public List<Restaurante> listar() {
@@ -69,7 +75,16 @@ public class RestauranteController {
                                       HttpServletRequest request) {
         Restaurante restauranteAtual = cadastroRestauranteService.buscar(restauranteId);
         merge(campos, restauranteAtual, request);
+        validate(restauranteAtual, "restaurante");
         return alterar(restauranteId, restauranteAtual);
+    }
+
+    private void validate(Restaurante restaurante, String objectName) {
+        BeanPropertyBindingResult bindingResult = new BeanPropertyBindingResult(restaurante, objectName);
+        validator.validate(restaurante, bindingResult);
+        if (bindingResult.hasErrors()) {
+            throw new ValidacaoException(bindingResult);
+        }
     }
 
     private static void merge(Map<String, Object> dadosOrigem, Restaurante restauranteDestino, HttpServletRequest request) {
