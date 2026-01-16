@@ -26,9 +26,10 @@ public class Cidade {
     private String nome;
 
     @Valid
-    @ConvertGroup(from = Default.class, to = Groups.EstadoId.class)
     @NotNull
     @ManyToOne
     @JoinColumn(nullable = false)
+    @ConvertGroup(from = Default.class, to = Groups.EstadoId.class)
     private Estado estado;
+
 }

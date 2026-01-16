@@ -1,0 +1,7 @@
+{
+  "nome": "Restaurante Com Frete Invalido",
+  "taxaFrete": -3.50,
+  "cozinha": {
+    "id": 2
+  }
+}

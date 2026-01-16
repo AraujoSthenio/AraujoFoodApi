@@ -2,7 +2,6 @@ package com.araujo.araujofood.domain.model;
 
 import com.araujo.araujofood.Groups;
 import com.araujo.araujofood.core.validation.ValorZeroIncluirDescricao;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
@@ -49,25 +48,20 @@ public class Restaurante {
     private Cozinha cozinha;
 
     @Embedded
-    @JsonIgnore
     private Endereco endereco;
 
     @CreationTimestamp
-    @JsonIgnore
     @Column(nullable = false, columnDefinition = "datetime")
     private LocalDateTime dataCadastro;
 
     @UpdateTimestamp
-    @JsonIgnore
     @Column(nullable = false, columnDefinition = "datetime")
     private LocalDateTime dataAtualizacao;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "restaurante")
     private List<Produto> produtos = new ArrayList<>();
 
     @ManyToMany
-    @JsonIgnore
     @JoinTable(name = "restaurante_forma_pagamento",
             joinColumns = @JoinColumn(name = "restaurante_id"),
             inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id"))
