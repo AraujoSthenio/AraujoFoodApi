@@ -21,7 +21,6 @@ import java.util.List;
 @RequestMapping("/restaurantes")
 public class RestauranteController {
 
-
     @Autowired
     private RestauranteRepository restauranteRepository;
 
@@ -68,6 +67,18 @@ public class RestauranteController {
         } catch (CozinhaNaoEncontradaException e) {
             throw new NegocioException(e.getMessage());
         }
+    }
+
+    @PutMapping("/{restauranteId}/ativo")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void ativar(@PathVariable Long restauranteId) {
+        cadastroRestauranteService.ativar(restauranteId);
+    }
+
+    @PutMapping("/{restauranteId}/inativo")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void inativar(@PathVariable Long restauranteId) {
+        cadastroRestauranteService.inativar(restauranteId);
     }
 
 }

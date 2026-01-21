@@ -17,17 +17,29 @@ public class CadastroRestauranteService {
     @Autowired
     private CadastroCozinhaService cozinhaService;
 
-    public Restaurante buscar(Long restauranteId) {
-        return restauranteRepository.findById(restauranteId)
-                .orElseThrow(() -> new RestauranteNaoEncontradoException(restauranteId));
-    }
-
     @Transactional
     public Restaurante salvar(Restaurante restaurante) {
         Long cozinhaId = restaurante.getCozinha().getId();
         Cozinha cozinha = cozinhaService.buscar(cozinhaId);
         restaurante.setCozinha(cozinha);
         return restauranteRepository.save(restaurante);
+    }
+
+    @Transactional
+    public void ativar(Long restauranteId) {
+        Restaurante restauranteAtual = buscar(restauranteId);
+        restauranteAtual.ativar();
+    }
+
+    @Transactional
+    public void inativar(Long restauranteId) {
+        Restaurante restauranteAtual = buscar(restauranteId);
+        restauranteAtual.inativar();
+    }
+
+    public Restaurante buscar(Long restauranteId) {
+        return restauranteRepository.findById(restauranteId)
+                .orElseThrow(() -> new RestauranteNaoEncontradoException(restauranteId));
     }
 
 }
