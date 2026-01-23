@@ -4,6 +4,7 @@ import com.araujo.araujofood.api.assembler.FormaPagamentoInputDisassembler;
 import com.araujo.araujofood.api.assembler.FormaPagamentoModelAssembler;
 import com.araujo.araujofood.api.model.FormaPagamentoModel;
 import com.araujo.araujofood.api.model.input.FormaPagamentoInput;
+import com.araujo.araujofood.domain.model.FormaPagamento;
 import com.araujo.araujofood.domain.repository.FormaPagamentoRepository;
 import com.araujo.araujofood.domain.service.CadastroFormaPagamentoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class FormaPagamentoController {
     private FormaPagamentoModelAssembler formaPagamentoModelAssembler;
 
     @Autowired
-    private FormaPagamentoInputDisassembler FormaPagamentoInputDisassembler;
+    private FormaPagamentoInputDisassembler formaPagamentoInputDisassembler;
 
     @GetMapping
     public List<FormaPagamentoModel> listar() {
@@ -41,21 +42,24 @@ public class FormaPagamentoController {
 
     @PostMapping
     public FormaPagamentoModel salvar(@RequestBody @Valid FormaPagamentoInput formaPAgamentoInput) {
-        //todo: Continuar implementação endpoint de salvar
-        return null;
+        FormaPagamento formaPagamento = formaPagamentoInputDisassembler.toDomainModel(formaPAgamentoInput);
+        formaPagamento = formaPagamentoService.salvar(formaPagamento);
+        return formaPagamentoModelAssembler.toModel(formaPagamento);
     }
 
     @PutMapping("/{formaPagamentoId}")
     public FormaPagamentoModel Atualizar(@PathVariable @Valid Long formaPagamentoId,
                                          @RequestBody FormaPagamentoInput formaPAgamentoInput) {
-        //todo: Continuar implementação endpoint de alterar
-        return null;
+        FormaPagamento formaPagamentoAtual = formaPagamentoService.buscar(formaPagamentoId);
+        formaPagamentoInputDisassembler.copyToDomainModel(formaPAgamentoInput, formaPagamentoAtual);
+        formaPagamentoAtual = formaPagamentoService.salvar(formaPagamentoAtual);
+        return formaPagamentoModelAssembler.toModel(formaPagamentoAtual);
     }
 
     @DeleteMapping("/{formaPagamentoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void remover(@PathVariable Long formaPagamentoId) {
-        //todo: Continuar implementação endpoint de exclusão
+        formaPagamentoService.remover(formaPagamentoId);
     }
 
 
