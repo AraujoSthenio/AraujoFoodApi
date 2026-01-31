@@ -23,7 +23,7 @@ public class CadastroCozinhaService {
         return cozinhaRepository.save(cozinha);
     }
 
-    public Cozinha buscar(Long cozinhaId) {
+    public Cozinha buscarOuFalhar(Long cozinhaId) {
         return cozinhaRepository.findById(cozinhaId)
                 .orElseThrow(() -> new CozinhaNaoEncontradaException(cozinhaId));
     }

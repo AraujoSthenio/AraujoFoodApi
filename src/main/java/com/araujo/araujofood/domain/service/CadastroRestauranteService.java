@@ -1,6 +1,7 @@
 package com.araujo.araujofood.domain.service;
 
 import com.araujo.araujofood.domain.exception.RestauranteNaoEncontradoException;
+import com.araujo.araujofood.domain.model.Cidade;
 import com.araujo.araujofood.domain.model.Cozinha;
 import com.araujo.araujofood.domain.model.Restaurante;
 import com.araujo.araujofood.domain.repository.RestauranteRepository;
@@ -17,11 +18,20 @@ public class CadastroRestauranteService {
     @Autowired
     private CadastroCozinhaService cozinhaService;
 
+    @Autowired
+    private CadastroCidadeService cidadeService;
+
     @Transactional
     public Restaurante salvar(Restaurante restaurante) {
         Long cozinhaId = restaurante.getCozinha().getId();
-        Cozinha cozinha = cozinhaService.buscar(cozinhaId);
+        Long cidadeId = restaurante.getEndereco().getCidade().getId();
+
+        Cozinha cozinha = cozinhaService.buscarOuFalhar(cozinhaId);
+        Cidade cidade = cidadeService.buscarOuFalhar(cidadeId);
+
         restaurante.setCozinha(cozinha);
+        restaurante.getEndereco().setCidade(cidade);
+
         return restauranteRepository.save(restaurante);
     }
 

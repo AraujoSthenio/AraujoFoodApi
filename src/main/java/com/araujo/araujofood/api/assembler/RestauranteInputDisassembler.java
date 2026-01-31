@@ -1,6 +1,7 @@
 package com.araujo.araujofood.api.assembler;
 
 import com.araujo.araujofood.api.model.input.RestauranteInput;
+import com.araujo.araujofood.domain.model.Cidade;
 import com.araujo.araujofood.domain.model.Cozinha;
 import com.araujo.araujofood.domain.model.Restaurante;
 import org.modelmapper.ModelMapper;
@@ -20,6 +21,10 @@ public class RestauranteInputDisassembler {
     public void copyToDomainObject(RestauranteInput restauranteInput, Restaurante restaurante) {
         // Para evitar HibernateException
         restaurante.setCozinha(new Cozinha());
+
+        if (restaurante.getEndereco() != null) {
+            restaurante.getEndereco().setCidade(new Cidade());
+        }
 
         modelMapper.map(restauranteInput, restaurante);
     }

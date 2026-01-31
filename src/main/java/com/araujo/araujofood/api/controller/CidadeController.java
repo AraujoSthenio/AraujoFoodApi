@@ -39,7 +39,7 @@ public class CidadeController {
 
     @GetMapping("/{cidadeId}")
     public CidadeModel buscar(@PathVariable Long cidadeId) {
-        return cidadeModelAssembler.toModel(cadastroCidadeService.buscar(cidadeId));
+        return cidadeModelAssembler.toModel(cadastroCidadeService.buscarOuFalhar(cidadeId));
     }
 
     @PostMapping
@@ -53,9 +53,9 @@ public class CidadeController {
     }
 
     @PutMapping("/{cidadeId}")
-    public CidadeModel alterar(@PathVariable @Valid Long cidadeId, @RequestBody CidadeInput cidadeInput) {
+    public CidadeModel alterar(@PathVariable Long cidadeId, @RequestBody @Valid CidadeInput cidadeInput) {
         try {
-            Cidade cidadeAtual = cadastroCidadeService.buscar(cidadeId);
+            Cidade cidadeAtual = cadastroCidadeService.buscarOuFalhar(cidadeId);
             cidadeInputDisassembler.copyToDomainObject(cidadeInput, cidadeAtual);
             return cidadeModelAssembler.toModel(cadastroCidadeService.salvar(cidadeAtual));
         } catch (EstadoNaoEncontradoException e) {

@@ -22,7 +22,7 @@ public class CadastroCidadeService {
     @Autowired
     private CadastroEstadoService estadoService;
 
-    public Cidade buscar(Long cidadeId) {
+    public Cidade buscarOuFalhar(Long cidadeId) {
         return cidadeRepository.findById(cidadeId)
                 .orElseThrow(() -> new CidadeNaoEncontradaException(cidadeId));
     }

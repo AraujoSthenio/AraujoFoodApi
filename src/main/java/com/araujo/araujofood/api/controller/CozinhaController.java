@@ -37,7 +37,7 @@ public class CozinhaController {
 
     @GetMapping("/{cozinhaId}")
     public CozinhaModel buscar(@PathVariable Long cozinhaId) {
-        Cozinha cozinha = cadastroCozinhaService.buscar(cozinhaId);
+        Cozinha cozinha = cadastroCozinhaService.buscarOuFalhar(cozinhaId);
         return cozinhaModelAssembler.toModel(cozinha);
     }
 
@@ -49,8 +49,8 @@ public class CozinhaController {
     }
 
     @PutMapping("/{cozinhaId}")
-    public CozinhaModel atualizar(@PathVariable @Valid Long cozinhaId, @RequestBody CozinhaInput cozinhaInput) {
-        Cozinha cozinhaAtual = cadastroCozinhaService.buscar(cozinhaId);
+    public CozinhaModel atualizar(@PathVariable Long cozinhaId, @RequestBody @Valid CozinhaInput cozinhaInput) {
+        Cozinha cozinhaAtual = cadastroCozinhaService.buscarOuFalhar(cozinhaId);
         cozinhaInputDisassembler.copyToDomainObject(cozinhaInput, cozinhaAtual);
         return cozinhaModelAssembler.toModel(cadastroCozinhaService.salvar(cozinhaAtual));
     }

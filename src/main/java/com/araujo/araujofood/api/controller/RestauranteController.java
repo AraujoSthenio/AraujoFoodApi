@@ -4,6 +4,7 @@ import com.araujo.araujofood.api.assembler.RestauranteInputDisassembler;
 import com.araujo.araujofood.api.assembler.RestauranteModelAssembler;
 import com.araujo.araujofood.api.model.RestauranteModel;
 import com.araujo.araujofood.api.model.input.RestauranteInput;
+import com.araujo.araujofood.domain.exception.CidadeNaoEncontradaException;
 import com.araujo.araujofood.domain.exception.CozinhaNaoEncontradaException;
 import com.araujo.araujofood.domain.exception.NegocioException;
 import com.araujo.araujofood.domain.model.Restaurante;
@@ -59,12 +60,12 @@ public class RestauranteController {
     }
 
     @PutMapping("/{restauranteId}")
-    public RestauranteModel alterar(@PathVariable @Valid Long restauranteId, @RequestBody RestauranteInput restauranteInput) {
+    public RestauranteModel alterar(@PathVariable Long restauranteId, @RequestBody @Valid RestauranteInput restauranteInput) {
         try {
             Restaurante restauranteAtual = cadastroRestauranteService.buscar(restauranteId);
             restauranteInputDisassembler.copyToDomainObject(restauranteInput, restauranteAtual);
             return restauranteModelAssembler.toModel(cadastroRestauranteService.salvar(restauranteAtual));
-        } catch (CozinhaNaoEncontradaException e) {
+        } catch (CozinhaNaoEncontradaException | CidadeNaoEncontradaException e) {
             throw new NegocioException(e.getMessage());
         }
     }
