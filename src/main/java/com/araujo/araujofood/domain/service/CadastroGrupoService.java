@@ -4,6 +4,7 @@ import com.araujo.araujofood.domain.exception.CidadeNaoEncontradaException;
 import com.araujo.araujofood.domain.exception.EntidadeEmUsoException;
 import com.araujo.araujofood.domain.exception.GrupoNaoEncontradoException;
 import com.araujo.araujofood.domain.model.Grupo;
+import com.araujo.araujofood.domain.model.Permissao;
 import com.araujo.araujofood.domain.repository.GrupoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -18,6 +19,9 @@ public class CadastroGrupoService {
 
     @Autowired
     private GrupoRepository grupoRepository;
+
+    @Autowired
+    private CadastroPermissaoService permissaoService;
 
     public Grupo buscarOuFalhar(Long grupoId) {
         return grupoRepository.findById(grupoId).orElseThrow(() -> new GrupoNaoEncontradoException(grupoId));
@@ -40,5 +44,20 @@ public class CadastroGrupoService {
         }
     }
 
+    @Transactional
+    public void adicionarPermissao(Long grupoId, Long permissaoId) {
+        Grupo grupo = buscarOuFalhar(grupoId);
+        Permissao permissao = permissaoService.buscarOuFalhar(permissaoId);
+
+        grupo.adicionarPermissao(permissao);
+    }
+
+    @Transactional
+    public void removerPermissao(Long grupoId, Long permissaoId) {
+        Grupo grupo = buscarOuFalhar(grupoId);
+        Permissao permissao = permissaoService.buscarOuFalhar(permissaoId);
+
+        grupo.removerPermissao(permissao);
+    }
 
 }

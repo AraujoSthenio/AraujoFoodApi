@@ -44,7 +44,7 @@ public class RestauranteController {
 
     @GetMapping("/{restauranteId}")
     public RestauranteModel buscar(@PathVariable Long restauranteId) {
-        Restaurante restaurante = cadastroRestauranteService.buscar(restauranteId);
+        Restaurante restaurante = cadastroRestauranteService.buscarOuFalhar(restauranteId);
         return restauranteModelAssembler.toModel(restaurante);
     }
 
@@ -62,7 +62,7 @@ public class RestauranteController {
     @PutMapping("/{restauranteId}")
     public RestauranteModel alterar(@PathVariable Long restauranteId, @RequestBody @Valid RestauranteInput restauranteInput) {
         try {
-            Restaurante restauranteAtual = cadastroRestauranteService.buscar(restauranteId);
+            Restaurante restauranteAtual = cadastroRestauranteService.buscarOuFalhar(restauranteId);
             restauranteInputDisassembler.copyToDomainObject(restauranteInput, restauranteAtual);
             return restauranteModelAssembler.toModel(cadastroRestauranteService.salvar(restauranteAtual));
         } catch (CozinhaNaoEncontradaException | CidadeNaoEncontradaException e) {
@@ -80,6 +80,18 @@ public class RestauranteController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void inativar(@PathVariable Long restauranteId) {
         cadastroRestauranteService.inativar(restauranteId);
+    }
+
+    @PutMapping("/{restauranteId}/aberto")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void abrir(@PathVariable Long restauranteId) {
+        cadastroRestauranteService.abrir(restauranteId);
+    }
+
+    @PutMapping("/{restauranteId}/fechamento")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void fechar(@PathVariable Long restauranteId) {
+        cadastroRestauranteService.fechar(restauranteId);
     }
 
 }

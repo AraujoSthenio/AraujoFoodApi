@@ -7,14 +7,12 @@ import java.math.BigDecimal;
 
 @Getter
 @Setter
-public class RestauranteModel {
+public class ProdutoModel {
 
     private Long id;
     private String nome;
-    private BigDecimal taxaFrete;
-    private CozinhaModel cozinha;
-    private Boolean aberto;
+    private String descricao;
+    private BigDecimal preco;
     private Boolean ativo;
-    private EnderecoModel endereco;
 
 }

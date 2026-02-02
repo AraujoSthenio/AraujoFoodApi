@@ -18,7 +18,7 @@ public class CadastroFormaPagamentoService {
     @Autowired
     private FormaPagamentoRepository formaPagamentoRepository;
 
-    public FormaPagamento buscar(Long formaPagamentoId) {
+    public FormaPagamento buscarOuFalhar(Long formaPagamentoId) {
         return formaPagamentoRepository.findById(formaPagamentoId)
                 .orElseThrow(() -> new FormaPagamentoNaoEncontradaException(formaPagamentoId));
     }

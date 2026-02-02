@@ -1,7 +1,7 @@
 package com.araujo.araujofood.api.assembler;
 
-import com.araujo.araujofood.api.model.GrupoModel;
-import com.araujo.araujofood.domain.model.Grupo;
+import com.araujo.araujofood.api.model.PermissaoModel;
+import com.araujo.araujofood.domain.model.Permissao;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -11,17 +11,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class GrupoModelAssembler {
+public class PermissaoModelAssembler {
 
     @Autowired
     private ModelMapper modelMapper;
 
-    public GrupoModel toModel(Grupo grupo) {
-        return modelMapper.map(grupo, GrupoModel.class);
+    public PermissaoModel toModel(Permissao permissao) {
+        return modelMapper.map(permissao, PermissaoModel.class);
     }
 
-    public List<GrupoModel> toCollectionModel(Collection<Grupo> grupos) {
-        return grupos.stream()
+    public List<PermissaoModel> toCollectionModel(Collection<Permissao> permissoes) {
+        return permissoes.stream()
                 .map(this::toModel)
                 .collect(Collectors.toList());
     }
