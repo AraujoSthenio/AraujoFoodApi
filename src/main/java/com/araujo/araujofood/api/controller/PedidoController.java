@@ -44,9 +44,9 @@ public class PedidoController {
         return pedidoResumoModelAssembler.toCollectionModel(pedidos);
     }
 
-    @GetMapping("/{pedidoId}")
-    public PedidoModel buscar(@PathVariable Long pedidoId) {
-        Pedido pedido = pedidoService.buscarOuFalhar(pedidoId);
+    @GetMapping("/{codigoPedido}")
+    public PedidoModel buscar(@PathVariable String codigoPedido) {
+        Pedido pedido = pedidoService.buscarOuFalhar(codigoPedido);
         return pedidoModelAssembler.toModel(pedido);
     }
 
@@ -54,10 +54,8 @@ public class PedidoController {
     public PedidoModel adicionar(@RequestBody @Valid PedidoInput pedidoInput) {
         try {
             Pedido novoPedido = pedidoInputDisassembler.toDomainObject(pedidoInput);
-
             novoPedido.setCliente(new Usuario());
             novoPedido.getCliente().setId(1L);
-
             novoPedido = pedidoService.emitir(novoPedido);
             return pedidoModelAssembler.toModel(novoPedido);
         } catch (EntidadeNaoEncontradaException e) {

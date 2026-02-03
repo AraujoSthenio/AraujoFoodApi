@@ -9,8 +9,10 @@ import com.araujo.araujofood.domain.exception.CozinhaNaoEncontradaException;
 import com.araujo.araujofood.domain.exception.NegocioException;
 import com.araujo.araujofood.domain.exception.RestauranteNaoEncontradoException;
 import com.araujo.araujofood.domain.model.Restaurante;
+import com.araujo.araujofood.api.model.view.RestauranteView;
 import com.araujo.araujofood.domain.repository.RestauranteRepository;
 import com.araujo.araujofood.domain.service.CadastroRestauranteService;
+import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.SmartValidator;
@@ -38,6 +40,7 @@ public class RestauranteController {
     @Autowired
     private SmartValidator validator;
 
+    @JsonView(RestauranteView.Resumo.class)
     @GetMapping
     public List<RestauranteModel> listar() {
         return restauranteModelAssembler.toCollectionModel(restauranteRepository.findAll());
