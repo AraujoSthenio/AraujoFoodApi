@@ -9,11 +9,16 @@ import com.araujo.araujofood.api.model.input.PedidoInput;
 import com.araujo.araujofood.domain.exception.EntidadeNaoEncontradaException;
 import com.araujo.araujofood.domain.exception.NegocioException;
 import com.araujo.araujofood.domain.model.Pedido;
-import com.araujo.araujofood.domain.model.StatusPedido;
 import com.araujo.araujofood.domain.model.Usuario;
 import com.araujo.araujofood.domain.repository.PedidoRepository;
+import com.araujo.araujofood.domain.repository.filter.PedidoFilter;
 import com.araujo.araujofood.domain.service.EmissaoPedidoService;
+import com.araujo.araujofood.infrastructure.repository.spec.PedidoSpecs;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -39,9 +44,11 @@ public class PedidoController {
     private PedidoInputDisassembler pedidoInputDisassembler;
 
     @GetMapping
-    public List<PedidoResumoModel> listar() {
-        List<Pedido> pedidos = pedidoRepository.findAll();
-        return pedidoResumoModelAssembler.toCollectionModel(pedidos);
+    public Page<PedidoResumoModel> pesquisar(@PageableDefault(size = 10) PedidoFilter filtro, Pageable pageable) {
+        Page<Pedido> pedidosPage = pedidoRepository.findAll(PedidoSpecs.usandoFiltro(filtro), pageable);
+        List<PedidoResumoModel> pedidosModel = pedidoResumoModelAssembler.toCollectionModel(pedidosPage.getContent());
+
+        return new PageImpl<>(pedidosModel, pageable, pedidosPage.getTotalElements());
     }
 
     @GetMapping("/{codigoPedido}")

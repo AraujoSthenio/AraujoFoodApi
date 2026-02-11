@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.websocket.server.PathParam;
 import java.util.List;
 
 @RestController
@@ -35,9 +36,16 @@ public class RestauranteProdutoController {
     private CadastroProdutoService produtoService;
 
     @GetMapping
-    public List<ProdutoModel> listar(@PathVariable Long restauranteId) {
+    public List<ProdutoModel> listar(@PathVariable Long restauranteId,
+                                     @RequestParam(required = false) boolean incluirInativos) {
         Restaurante restaurante = restauranteService.buscarOuFalhar(restauranteId);
-        List<Produto> produtos = produtoRepository.findByRestaurante(restaurante);
+        List<Produto> produtos;
+        if (incluirInativos) {
+            produtos = produtoRepository.findByRestaurante(restaurante);
+        } else {
+            produtos = produtoRepository.findAtivosByRestaurante(restaurante);
+        }
+
         return produtoModelAssembler.toCollectionModel(produtos);
     }
 
