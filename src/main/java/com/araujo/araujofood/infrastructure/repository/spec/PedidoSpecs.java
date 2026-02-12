@@ -1,12 +1,10 @@
 package com.araujo.araujofood.infrastructure.repository.spec;
 
 import com.araujo.araujofood.domain.model.Pedido;
-import com.araujo.araujofood.domain.model.Restaurante;
-import com.araujo.araujofood.domain.repository.filter.PedidoFilter;
+import com.araujo.araujofood.domain.filter.PedidoFilter;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.Predicate;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 
 public class PedidoSpecs {

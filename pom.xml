@@ -19,6 +19,7 @@
     <properties>
 		<java.version>17</java.version>
         <modelmapper.version>3.1.0</modelmapper.version>
+        <jasper.version>7.0.1</jasper.version>
 	</properties>
 
 	<dependencies>
@@ -91,6 +92,25 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+        <dependency>
+            <groupId>net.sf.jasperreports</groupId>
+            <artifactId>jasperreports</artifactId>
+            <version>${jasper.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>net.sf.jasperreports</groupId>
+            <artifactId>jasperreports-functions</artifactId>
+            <version>${jasper.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>net.sf.jasperreports</groupId>
+            <artifactId>jasperreports-pdf</artifactId>
+            <version>${jasper.version}</version>
+        </dependency>
+
 	</dependencies>
 
 	<build>
